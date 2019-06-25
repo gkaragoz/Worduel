@@ -41,4 +41,10 @@ public class NetworkManager : MonoBehaviour {
         _socket.Connect();
     }
 
+    private void OnApplicationQuit() {
+        if (_socket.IsConnected) {
+            _socket.Close();
+        }
+    }
+
 }
