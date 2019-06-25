@@ -8,24 +8,42 @@ public class NetworkManager : MonoBehaviour {
     private void Start() {
         _socket = GetComponent<SocketIOComponent>();
 
-        _socket.On("OnConnected", OnConnected);
-        _socket.On("OnMessage", OnMessage);
-        _socket.On("OnDisconnected", OnDisconnected);
+        _socket.On("OnServerConnected", OnServerConnected);
+        _socket.On("OnServerDisconnected", OnServerDisconnected);
+        _socket.On("OnAuthenticated", OnAuthenticated);
+        _socket.On("OnAuthenticateFailed", OnAuthenticateFailed);
         _socket.On("error", OnError);
 
         ConnectToServer();
     }
 
-    private void OnMessage(SocketIOEvent e) {
-        Debug.Log("OnMessage, " + e.name + ":" + e.data);
+    private void OnServerConnected(SocketIOEvent e) {
+        Debug.Log("OnServerConnected, " + e.name + ":" + e.data);
+
+        Authenticate();
     }
 
-    private void OnConnected(SocketIOEvent e) {
-        Debug.Log("OnConnected, " + e.name + ":" + e.data);
+    private void OnServerDisconnected(SocketIOEvent e) {
+        Debug.Log("OnServerDisconnected, " + e.name + ":" + e.data);
     }
 
-    private void OnDisconnected(SocketIOEvent e) {
-        Debug.Log("OnDisconnected, " + e.name + ":" + e.data);
+    private void OnAuthenticated(SocketIOEvent e) {
+        Debug.Log("OnAuthenticated, " + e.name + ":" + e.data);
+
+        PlayerStats myPlayerStats = new PlayerStats() {
+            Id = e.data["id"].str,
+            Username = e.data["username"].str,
+            FirstName = e.data["firstName"].str,
+            LastName = e.data["lastName"].str,
+            Gender = (Gender)int.Parse(e.data["gender"].ToString())
+        };
+
+        Debug.Log("Trying to create local player.");
+        GameManager.instance.CreateMyPlayer(myPlayerStats);
+    }
+
+    private void OnAuthenticateFailed(SocketIOEvent e) {
+        Debug.Log("OnAuthenticateFailed, " + e.name + ":" + e.data);
     }
 
     private void OnError(SocketIOEvent e) {
@@ -39,6 +57,15 @@ public class NetworkManager : MonoBehaviour {
 
         Debug.Log("Trying to connect to server..." + _socket.url);
         _socket.Connect();
+    }
+
+    public void Authenticate() {
+        Authentication auth = new Authentication("testGoogleId");
+
+        JSONObject jsonObject = new JSONObject(JSONObject.Type.OBJECT);
+        jsonObject.AddField("googlePlayId", auth.GoogleId);
+
+        _socket.Emit("OnAuthenticate", jsonObject);
     }
 
     private void OnApplicationQuit() {
