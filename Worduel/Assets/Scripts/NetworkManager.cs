@@ -3,6 +3,21 @@ using UnityEngine;
 
 public class NetworkManager : MonoBehaviour {
 
+    #region Singleton
+
+    public static NetworkManager instance;
+
+    private void Awake() {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
+
+    #endregion
+
+    public string Status { get; set; }
+
     private SocketIOComponent _socket;
 
     private void Start() {
@@ -18,16 +33,19 @@ public class NetworkManager : MonoBehaviour {
     }
 
     private void OnServerConnected(SocketIOEvent e) {
+        Status = "Connected to " + _socket.url;
         Debug.Log("OnServerConnected, " + e.name + ":" + e.data);
 
         Authenticate();
     }
 
     private void OnServerDisconnected(SocketIOEvent e) {
+        Status = "Disconnected.";
         Debug.Log("OnServerDisconnected, " + e.name + ":" + e.data);
     }
 
     private void OnAuthenticated(SocketIOEvent e) {
+        Status = "Authenticated!";
         Debug.Log("OnAuthenticated, " + e.name + ":" + e.data);
 
         PlayerStats myPlayerStats = new PlayerStats() {
@@ -43,10 +61,12 @@ public class NetworkManager : MonoBehaviour {
     }
 
     private void OnAuthenticateFailed(SocketIOEvent e) {
+        Status = "ERROR: Authentication failed!";
         Debug.Log("OnAuthenticateFailed, " + e.name + ":" + e.data);
     }
 
     private void OnError(SocketIOEvent e) {
+        Status = "ERROR: Server is offline!";
         Debug.Log("OnError: " + e.name + ":" + e.data);
     }
 
@@ -55,11 +75,13 @@ public class NetworkManager : MonoBehaviour {
             return;
         }
 
-        Debug.Log("Trying to connect to server..." + _socket.url);
+        Status = "Trying to connect to server..." + _socket.url;
+        Debug.Log(Status);
         _socket.Connect();
     }
 
     public void Authenticate() {
+        Status = "Trying to authenticate...";
         Authentication auth = new Authentication("testGoogleId");
 
         JSONObject jsonObject = new JSONObject(JSONObject.Type.OBJECT);
