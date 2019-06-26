@@ -1,34 +1,34 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Swipe : MonoBehaviour {
 
+    public Action onSwipeToLeft;
+    public Action onSwipeToRight;
+    public Action onSwipeToUp;
+    public Action onSwipeToDown;
+    public Action<Vector2> onDragging;
+
+    [SerializeField]
+    private float _sensivity = 125f;
+
     private bool _isTapping;
-    private bool _isSwipingToLeft;
-    private bool _isSwipingToRight;
-    private bool _isSwipingToUp;
-    private bool _isSwipingToDown;
-    private bool _isDraging;
+    private bool _isDragging;
 
     private Vector2 _startTouch;
     private Vector2 _swipeDelta;
 
-    public Vector2 SwipeDelta { get { return _swipeDelta; } }
-    public bool IsSwipingToLeft { get { return _isSwipingToLeft; } }
-    public bool IsSwipingToRight { get { return _isSwipingToRight; } }
-    public bool IsSwipingToUp { get { return _isSwipingToUp; } }
-    public bool IsSwipingToDown { get { return _isSwipingToDown; } }
-
     private void Update() {
-        _isTapping = _isSwipingToLeft = _isSwipingToRight = _isSwipingToUp = _isSwipingToDown = false;
+        _isTapping = false;
 
         #region Standalone Inputs
 
         if (Input.GetMouseButtonDown(0)) {
             _isTapping = true;
-            _isDraging = true;
+            _isDragging = true;
             _startTouch = Input.mousePosition;
         } else if (Input.GetMouseButtonUp(0)) {
-            _isDraging = false;
+            _isDragging = false;
             Reset();
         }
 
@@ -56,32 +56,34 @@ public class Swipe : MonoBehaviour {
 
         // Calculate the distance
         _swipeDelta = Vector2.zero;
-        if (_isDraging) {
+        if (_isDragging) {
             if (Input.touchCount > 0) {
                 _swipeDelta = Input.GetTouch(0).position - _startTouch;
             } else if (Input.GetMouseButton(0)) {
                 _swipeDelta = (Vector2)Input.mousePosition - _startTouch;
             }
+
+            onDragging?.Invoke(_swipeDelta);
         }
 
         // Did we cross the deadzone?
-        if (_swipeDelta.magnitude > 125) {
+        if (_swipeDelta.magnitude > _sensivity) {
             // Which direction?
             float x = _swipeDelta.x;
             float y = _swipeDelta.y;
             if (Mathf.Abs(x) > Mathf.Abs(y)) {
                 // Left or right
                 if (x < 0) {
-                    _isSwipingToLeft = true;
+                    onSwipeToLeft?.Invoke();
                 } else {
-                    _isSwipingToRight = true;
+                    onSwipeToRight?.Invoke();
                 }
             } else {
                 // Up or down
                 if (y < 0) {
-                    _isSwipingToDown = true;
+                    onSwipeToDown?.Invoke();
                 } else {
-                    _isSwipingToUp = true;
+                    onSwipeToUp?.Invoke();
                 }
             }
 
@@ -91,7 +93,7 @@ public class Swipe : MonoBehaviour {
 
     private void Reset() {
         _startTouch = _swipeDelta = Vector2.zero;
-        _isDraging = false;
+        _isDragging = false;
     }
 
 }

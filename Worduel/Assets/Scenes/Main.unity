@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 388290502}
   - component: {fileID: 388290505}
   - component: {fileID: 388290504}
-  - component: {fileID: 388290503}
   m_Layer: 5
   m_Name: txtScreenName
   m_TagString: Untagged
@@ -158,20 +157,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -425.96008}
   m_SizeDelta: {x: 520, y: 71.8}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &388290503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388290501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2102393f989933a4b86bb2434e7e0744, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _statusPreMessage: 'Server status: '
-  _color: {r: 0.38039216, g: 0.38039216, b: 0.38039216, a: 1}
 --- !u!114 &388290504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,6 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741271608fbf6d24aa932df7cdfe5291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sensivity: 125
 --- !u!1 &904439263
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +797,6 @@ GameObject:
   - component: {fileID: 1251708376}
   - component: {fileID: 1251708379}
   - component: {fileID: 1251708378}
-  - component: {fileID: 1251708377}
   m_Layer: 5
   m_Name: txtScreenName
   m_TagString: Untagged
@@ -838,20 +823,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -425.9604}
   m_SizeDelta: {x: 520, y: 71.8}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1251708377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1251708375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2102393f989933a4b86bb2434e7e0744, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _statusPreMessage: 'Server status: '
-  _color: {r: 0.38039216, g: 0.38039216, b: 0.38039216, a: 1}
 --- !u!114 &1251708378
 MonoBehaviour:
   m_ObjectHideFlags: 0
