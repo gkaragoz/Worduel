@@ -20,7 +20,8 @@ public class FragmentManager : MonoBehaviour {
         Home,
         Matchmaking,
         Shop,
-        Leaderboards
+        Leaderboards,
+        Gameplay
     }
 
     public enum PopupEnum {
@@ -48,11 +49,17 @@ public class FragmentManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (_currentFragment.FragmentEnum == FragmentEnum.Matchmaking) {
-                Open(FragmentEnum.Home);
-            } else {
+        #if UNITY_EDITOR
+        if (Input.GetMouseButtonDown(0)) {
+#elif UNITY_ANDROID
+        if (Input.GetTouch(0).phase == TouchPhase.Began) {
+#endif
+            if (_currentFragment.FragmentEnum == FragmentEnum.Home) {
                 Open(FragmentEnum.Matchmaking);
+            } else if (_currentFragment.FragmentEnum == FragmentEnum.Matchmaking) {
+                Open(FragmentEnum.Gameplay);
+            } else {
+                Open(FragmentEnum.Home);
             }
         }
     }
