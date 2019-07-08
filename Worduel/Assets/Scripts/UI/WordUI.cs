@@ -11,6 +11,10 @@ public class WordUI : MonoBehaviour {
     private string _wordString;
 
     public void SetWord(string word) {
+        if (word == string.Empty) {
+            word = ":(";
+        }
+
         _wordString = word;
 
         _txtWord.text = _wordString;
