@@ -58,8 +58,6 @@ public class FragmentManager : MonoBehaviour {
                 Open(FragmentEnum.Matchmaking);
             } else if (_currentFragment.FragmentEnum == FragmentEnum.Matchmaking) {
                 Open(FragmentEnum.Gameplay);
-            } else {
-                Open(FragmentEnum.Home);
             }
         }
     }
