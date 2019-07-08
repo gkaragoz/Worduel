@@ -2682,8 +2682,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _txtInput: {fileID: 1894830554}
+  _chatContentTransform: {fileID: 325317556}
+  _myWordPrefab: {fileID: 5464749901438160104, guid: 5a7f9a03fc8b0ae4092f4fde6e43dfed,
+    type: 3}
+  _opponentWordPrefab: {fileID: 8239465742218540757, guid: c72fe8266b1b10a4bbad38f832cca318,
+    type: 3}
   _maxCreatedInputLength: 25
   _createdInputString: 
+  _createdWords: []
 --- !u!1001 &597589566
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9976,7 +9982,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2120058402}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 581897539}
+        m_MethodName: SendWord
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2120058402
