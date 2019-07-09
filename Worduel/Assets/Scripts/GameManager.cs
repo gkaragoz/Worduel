@@ -22,13 +22,11 @@ public class GameManager : MonoBehaviourPunCallbacks {
     [SerializeField]
     private GameObject _playerPrefab = null;
     [SerializeField]
-    private Matchmaking _matchmaking = null;
-    [SerializeField]
     private float _delayToOpenGameplayScreen = 3f;
 
     private void Start() {
-        _matchmaking.onMatchmakingSuccess += OnMatchmakingSuccess;
-        _matchmaking.onMatchmakingViaBot += OnMatchMakingViaBot;
+        Matchmaking.instance.onMatchmakingSuccess += OnMatchmakingSuccess;
+        Matchmaking.instance.onMatchmakingViaBot += OnMatchMakingViaBot;
     }
 
     private void OnMatchmakingSuccess() {
@@ -53,7 +51,7 @@ public class GameManager : MonoBehaviourPunCallbacks {
         PlayerData playerData = PhotonNetwork.Instantiate(_playerPrefab.name, Vector3.zero, Quaternion.identity).GetComponent<PlayerData>();
         playerData.gameObject.name = PhotonNetwork.PlayerList[PhotonNetwork.PlayerList.Length - 1].NickName;
 
-        Debug.Log("My player is successfully created!");
+        Debug.Log("Player is successfully created!");
     }
 
     public override void OnJoinedRoom() {

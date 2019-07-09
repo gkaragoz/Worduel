@@ -4,40 +4,43 @@ public class OpponentAvatarUISettings : MonoBehaviour {
 
     [Header("Initializations")]
     [SerializeField]
-    private OpponentAvatarUI _avatarUI_0 = null;
-    [SerializeField]
     private OpponentAvatarUI _avatarUI_1 = null;
+    [SerializeField]
+    private OpponentAvatarUI _avatarUI_2 = null;
     [SerializeField]
     private Sprite[] _avatarSprites = null;
 
-    [Header("Settings")]
-    [SerializeField]
-    private float _speed = 750f;
-    [SerializeField]
-    private float _delay = 1f;
-    [SerializeField]
-    private float _outPosX = -260f;
-    [SerializeField]
-    private float _inPosX = 260f;
+    private bool _isRunning = true;
+    private Animator _animator = null;
+    private const string HAS_STOPPED = "HasStopped";
 
-    private void Update() {
-        if (_avatarUI_0.CurrentPosX > _outPosX) {
-            _avatarUI_0.Move(_speed, _outPosX);
-        } else {
-            _avatarUI_0.ResetPosition(_inPosX);
-            _avatarUI_0.SetRandomImage(GetRandomAvatarSprite());
-        }
+    private void Start() {
+        Matchmaking.instance.onMatchmakingSuccess += StopAnimation;
+        Matchmaking.instance.onMatchmakingViaBot += StopAnimation;
 
-        if (_avatarUI_1.CurrentPosX > _outPosX) {
-            _avatarUI_1.Move(_speed, _outPosX);
-        } else {
-            _avatarUI_1.ResetPosition(_inPosX);
-            _avatarUI_1.SetRandomImage(GetRandomAvatarSprite());
+        _animator = GetComponent<Animator>();
+    }
+
+    public void StartAnimation() {
+        _isRunning = true;
+        _animator.SetBool(HAS_STOPPED, false);
+    }
+
+    public void StopAnimation() {
+        _isRunning = false;
+        _animator.SetBool(HAS_STOPPED, true);
+    }
+
+    public void ChangeAvatar1() {
+        if (_isRunning) {
+            _avatarUI_1.SetImage(_avatarSprites[Random.Range(0, _avatarSprites.Length)]);
         }
     }
 
-    public Sprite GetRandomAvatarSprite() {
-        return _avatarSprites[Random.Range(0, _avatarSprites.Length)];
+    public void ChangeAvatar2() {
+        if (_isRunning) {
+            _avatarUI_2.SetImage(_avatarSprites[Random.Range(0, _avatarSprites.Length)]);
+        }
     }
 
 }

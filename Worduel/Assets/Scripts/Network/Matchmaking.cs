@@ -6,12 +6,25 @@ using UnityEngine;
 
 public class Matchmaking : MonoBehaviourPunCallbacks {
 
+    #region Singleton
+
+    public static Matchmaking instance;
+
+    private void Awake() {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
+
+    #endregion
+
     public Action onMatchmakingSuccess;
     public Action onMatchmakingViaBot;
 
     [Header("Initialization")]
     [SerializeField]
-    private int _searchTimeoutInSeconds = 8;
+    private float _searchTimeoutInSeconds = 8f;
 
     [Header("Debug")]
     [SerializeField]

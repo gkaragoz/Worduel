@@ -3127,7 +3127,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 6057856481785636950, guid: fd99c3d8cc045dd47bf59ab627f9c756,
     type: 3}
-  _matchmaking: {fileID: 1446036046}
   _delayToOpenGameplayScreen: 3
 --- !u!4 &617412904
 Transform:
@@ -5380,6 +5379,7 @@ GameObject:
   - component: {fileID: 1270666169}
   - component: {fileID: 1270666168}
   - component: {fileID: 1270666170}
+  - component: {fileID: 1270666171}
   m_Layer: 5
   m_Name: OpponentFrame
   m_TagString: Untagged
@@ -5457,8 +5457,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54840e2788d2224fadd815cd720bfd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _avatarUI_0: {fileID: 379064389}
-  _avatarUI_1: {fileID: 2086523414}
+  _avatarUI_1: {fileID: 379064389}
+  _avatarUI_2: {fileID: 2086523414}
   _avatarSprites:
   - {fileID: 21300000, guid: e546b49ff4a56db45b6c3198543ea9a5, type: 3}
   - {fileID: 21300000, guid: 58ffe579042ce7f4682c94c039b3628a, type: 3}
@@ -5540,10 +5540,25 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2643d16d370e99542b05f6923bcf36ac, type: 3}
   - {fileID: 21300000, guid: 09274b44adba1fd4aa5b4f4840e0ee02, type: 3}
   - {fileID: 21300000, guid: c980c065a6089bf4b8fb5bdb63824b55, type: 3}
-  _speed: 750
-  _delay: 1
-  _outPosX: -260
-  _inPosX: 260
+--- !u!95 &1270666171
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270666166}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 13a298ba31e4a284fafd103dd211e157, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1274597246
 GameObject:
   m_ObjectHideFlags: 0
@@ -10215,7 +10230,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 19.17212, y: -31.961529}
+  m_AnchoredPosition: {x: 19.172098, y: -31.961529}
   m_SizeDelta: {x: 38.344196, y: 63.923058}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3084034170897541698
@@ -10326,7 +10341,7 @@ PrefabInstance:
     - target: {fileID: 8997009291719375390, guid: 3e239d4f2b3d7a3409a986a5205d26ea,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 14.517029
+      value: 14.517
       objectReference: {fileID: 0}
     - target: {fileID: 8997009291719375390, guid: 3e239d4f2b3d7a3409a986a5205d26ea,
         type: 3}
