@@ -5,7 +5,7 @@ using UnityEngine;
 public class NetworkManager : MonoBehaviourPunCallbacks {
     
     private void Start() {
-        string username = "Player " + Random.Range(1000, 10000);
+        string username = System.Guid.NewGuid().ToString();
 
         PhotonNetwork.LocalPlayer.NickName = username;
         PhotonNetwork.ConnectUsingSettings();

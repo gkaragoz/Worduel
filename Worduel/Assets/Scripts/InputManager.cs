@@ -1,8 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour {
+
+    #region Singleton
+
+    public static InputManager instance;
+
+    private void Awake() {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
+
+    #endregion
+
+    public Action<string> onSendWord;
 
     [Header("Initialization")]
     [SerializeField]
@@ -53,17 +69,21 @@ public class InputManager : MonoBehaviour {
         CreatedInputString = CreatedInputString.Substring(0, CreatedInputString.Length - 1);
     }
 
+    public void SendWord(string word) {
+        WordUI newWordUI = Instantiate(_opponentWordPrefab, _chatContentTransform).GetComponent<WordUI>();
+        newWordUI.SetWord(word);
+
+        _createdWords.Add(newWordUI);
+    }
+
     public void SendWord() {
-        WordUI newWordUI = null;
-        if (Random.Range(0, 2) == 0) {
-          newWordUI = Instantiate(_myWordPrefab, _chatContentTransform).GetComponent<WordUI>();
-        } else {
-          newWordUI = Instantiate(_opponentWordPrefab, _chatContentTransform).GetComponent<WordUI>();
-        }
+        WordUI newWordUI = Instantiate(_myWordPrefab, _chatContentTransform).GetComponent<WordUI>();
 
         newWordUI.SetWord(CreatedInputString);
 
         _createdWords.Add(newWordUI);
+
+        onSendWord?.Invoke(CreatedInputString);
 
         CreatedInputString = string.Empty;
     }

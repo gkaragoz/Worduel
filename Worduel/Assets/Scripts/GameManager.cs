@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using Photon.Realtime;
+using System.Collections;
+using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviourPunCallbacks {
 
     #region Singleton
 
@@ -15,15 +18,46 @@ public class GameManager : MonoBehaviour {
 
     #endregion
 
+    [Header("Initialization")]
     [SerializeField]
-    private PlayerStats _myPlayerStats = null;
+    private GameObject _playerPrefab = null;
+    [SerializeField]
+    private Matchmaking _matchmaking = null;
+    [SerializeField]
+    private float _delayToOpenGameplayScreen = 3f;
 
-    public PlayerStats MyPlayerStats { get { return _myPlayerStats; } private set { _myPlayerStats = value; } }
+    private void Start() {
+        _matchmaking.onMatchmakingSuccess += OnMatchmakingSuccess;
+        _matchmaking.onMatchmakingViaBot += OnMatchMakingViaBot;
+        _matchmaking.onPlayerLeft += OnPlayerLeft;
+    }
 
-    public void CreateMyPlayer(PlayerStats myPlayerStats) {
-        this.MyPlayerStats = myPlayerStats;
+    private void OnMatchmakingSuccess() {
+        StartCoroutine(IOpenGameplayScreen());
+    }
+
+    private void OnMatchMakingViaBot() {
+        StartCoroutine(IOpenGameplayScreen());
+    }
+
+    private IEnumerator IOpenGameplayScreen() {
+        yield return new WaitForSeconds(_delayToOpenGameplayScreen);
+
+        FragmentManager.instance.Open(FragmentManager.FragmentEnum.Gameplay);
+    }
+
+    private void OnPlayerLeft() {
+        Debug.Log("OnPlayerLeft");
+    }
+
+    private void CreateMyPlayer() {
+        PhotonNetwork.Instantiate(_playerPrefab.name, Vector3.zero, Quaternion.identity).GetComponent<PlayerData>();
 
         Debug.Log("My player is successfully created!");
+    }
+
+    public override void OnJoinedRoom() {
+        CreateMyPlayer();
     }
 
 }

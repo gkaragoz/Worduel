@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 8001695706417151660}
   - component: {fileID: 8183290761567318005}
   - component: {fileID: 2335215247175061304}
+  - component: {fileID: 3821394035056974474}
   m_Layer: 5
   m_Name: btnQ
   m_TagString: Untagged
@@ -343,20 +344,15 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_MethodName: OnPressed
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Q
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &3821394035056974474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2486084824128714731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d66570aea71d1e24e8fb46f7b7f77ee8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

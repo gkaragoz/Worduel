@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
-public class PlayerStats {
+public class PlayerData : MonoBehaviour {
 
     [SerializeField]
     private string _id = "_id";

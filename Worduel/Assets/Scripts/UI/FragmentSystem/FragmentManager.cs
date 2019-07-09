@@ -48,20 +48,6 @@ public class FragmentManager : MonoBehaviour {
         _currentFragment = GetFragment(FragmentEnum.Home);
     }
 
-    private void Update() {
-        #if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0)) {
-#elif UNITY_ANDROID
-        if (Input.GetTouch(0).phase == TouchPhase.Began) {
-#endif
-            if (_currentFragment.FragmentEnum == FragmentEnum.Home) {
-                Open(FragmentEnum.Matchmaking);
-            } else if (_currentFragment.FragmentEnum == FragmentEnum.Matchmaking) {
-                Open(FragmentEnum.Gameplay);
-            }
-        }
-    }
-
     private Fragment GetFragment(FragmentEnum fragmentEnum) {
         for (int ii = 0; ii < _fragments.Length; ii++) {
             if (_fragments[ii].FragmentEnum == fragmentEnum) {

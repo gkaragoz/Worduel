@@ -41,6 +41,7 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
 
         Debug.Log(MATCHMAKING_STRING + "Matchmaking completed!");
         Debug.Log(MATCHMAKING_STRING + "Matched with a real user: " + PhotonNetwork.PlayerListOthers[0].NickName);
+
         onMatchmakingSuccess?.Invoke();
     }
 
@@ -50,10 +51,13 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
 
         Debug.Log(MATCHMAKING_STRING + "Matchmaking completed!");
         Debug.Log(MATCHMAKING_STRING + "Matched with BOT!");
+
         onMatchmakingViaBot?.Invoke();
     }
 
     public void StartMatchmaking() {
+        FragmentManager.instance.Open(FragmentManager.FragmentEnum.Matchmaking);
+
         Debug.Log("Matchmaking has been started!");
 
         _searchTimeoutLeft = _searchTimeoutInSeconds;
