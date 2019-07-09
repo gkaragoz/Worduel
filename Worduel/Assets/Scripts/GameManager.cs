@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
     private void Start() {
         _matchmaking.onMatchmakingSuccess += OnMatchmakingSuccess;
         _matchmaking.onMatchmakingViaBot += OnMatchMakingViaBot;
-        _matchmaking.onPlayerLeft += OnPlayerLeft;
     }
 
     private void OnMatchmakingSuccess() {
@@ -50,14 +49,23 @@ public class GameManager : MonoBehaviourPunCallbacks {
         Debug.Log("OnPlayerLeft");
     }
 
-    private void CreateMyPlayer() {
-        PhotonNetwork.Instantiate(_playerPrefab.name, Vector3.zero, Quaternion.identity).GetComponent<PlayerData>();
+    private void CreatePlayer() {
+        PlayerData playerData = PhotonNetwork.Instantiate(_playerPrefab.name, Vector3.zero, Quaternion.identity).GetComponent<PlayerData>();
+        playerData.gameObject.name = PhotonNetwork.PlayerList[PhotonNetwork.PlayerList.Length - 1].NickName;
 
         Debug.Log("My player is successfully created!");
     }
 
     public override void OnJoinedRoom() {
-        CreateMyPlayer();
+        CreatePlayer();
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer) {
+        
+    }
+
+    public override void OnPlayerLeftRoom(Player player) {
+        Debug.Log("Player left from room!" + player.NickName);
     }
 
 }

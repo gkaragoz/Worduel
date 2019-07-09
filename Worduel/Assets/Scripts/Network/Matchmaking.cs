@@ -8,7 +8,6 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
 
     public Action onMatchmakingSuccess;
     public Action onMatchmakingViaBot;
-    public Action onPlayerLeft;
 
     [Header("Initialization")]
     [SerializeField]
@@ -95,12 +94,6 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
         Debug.Log(MATCHMAKING_STRING + "Opponent found! (" + newPlayer.UserId + ")" + newPlayer.NickName);
 
         MatchmakingSuccess();
-    }
-
-    public override void OnPlayerLeftRoom(Player otherPlayer) {
-        Debug.Log(MATCHMAKING_STRING + "Player left from room! (" + otherPlayer.UserId + ")" + otherPlayer.NickName);
-
-        onPlayerLeft?.Invoke();
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message) {

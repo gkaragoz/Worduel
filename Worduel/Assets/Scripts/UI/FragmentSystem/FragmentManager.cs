@@ -16,6 +16,9 @@ public class FragmentManager : MonoBehaviour {
 
     #endregion
 
+    public Action onTransitionFinished;
+    public Action onTransitionStarted;
+
     public enum FragmentEnum {
         Home,
         Matchmaking,
@@ -37,12 +40,13 @@ public class FragmentManager : MonoBehaviour {
     [SerializeField]
     private Fragment[] _fragments = null;
 
-
     private Fragment _currentFragment;
     private Fragment _nextFragment;
     private string ANIM_IN_TRIGGER = "In";
     private string ANIM_OUT_TRIGGER = "Out";
     private bool _isBusy = false;
+
+    public FragmentEnum CurrentFragmentEnum { get { return _currentFragment.FragmentEnum; } }
 
     private void Start() {
         _currentFragment = GetFragment(FragmentEnum.Home);
@@ -85,6 +89,8 @@ public class FragmentManager : MonoBehaviour {
         }
         _nextFragment = GetFragment(fragmentEnum);
 
+        onTransitionStarted?.Invoke();
+
         _isBusy = true;
         StartTransitionIn();
     }
@@ -99,6 +105,8 @@ public class FragmentManager : MonoBehaviour {
     // Called from ScreenTransitionOutBehaviour.cs
     public void OnTransitionOutFinished() {
         _isBusy = false;
+
+        onTransitionFinished?.Invoke();
     }
 
 }
