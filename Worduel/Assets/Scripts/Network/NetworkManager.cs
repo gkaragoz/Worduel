@@ -3,7 +3,7 @@ using Photon.Realtime;
 using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks {
-    
+
     private void Start() {
         string username = System.Guid.NewGuid().ToString();
 
