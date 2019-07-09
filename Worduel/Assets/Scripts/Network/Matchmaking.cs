@@ -18,8 +18,6 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
     [SerializeField]
     private bool _isSearching = false;
     [SerializeField]
-    private bool _isOpponentFound = false;
-    [SerializeField]
     private float _searchTimeoutLeft;
 
     private const string MATCHMAKING_STRING = "[MATCHMAKING]: ";
@@ -34,14 +32,25 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(_searchTimeoutInSeconds);
 
         _isSearching = false;
+        MatchmakingViaBot();
+    }
 
-        if (_isOpponentFound) {
-            yield break;
-        } else {
-            Debug.Log(MATCHMAKING_STRING + "Matchmaking completed!");
-            Debug.Log(MATCHMAKING_STRING + "Matched with BOT!");
-            onMatchmakingViaBot?.Invoke();
-        }
+    private void MatchmakingSuccess() {
+        _isSearching = false;
+        StopAllCoroutines();
+
+        Debug.Log(MATCHMAKING_STRING + "Matchmaking completed!");
+        Debug.Log(MATCHMAKING_STRING + "Matched with a real user: " + PhotonNetwork.PlayerListOthers[0].NickName);
+        onMatchmakingSuccess?.Invoke();
+    }
+
+    private void MatchmakingViaBot() {
+        _isSearching = false;
+        StopAllCoroutines();
+
+        Debug.Log(MATCHMAKING_STRING + "Matchmaking completed!");
+        Debug.Log(MATCHMAKING_STRING + "Matched with BOT!");
+        onMatchmakingViaBot?.Invoke();
     }
 
     public void StartMatchmaking() {
@@ -65,11 +74,7 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
         _isSearching = true;
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2) {
-            Debug.Log(MATCHMAKING_STRING + "Matchmaking completed!");
-            Debug.Log(MATCHMAKING_STRING + "Matched with a real user: " + PhotonNetwork.PlayerListOthers[0].NickName);
-            onMatchmakingSuccess?.Invoke();
-
-            _isSearching = false;
+            MatchmakingSuccess();
         } else {
             Debug.Log(MATCHMAKING_STRING + "Waiting for an opponent...");
             StartCoroutine(IWaitForOpponent());
@@ -84,7 +89,8 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
 
     public override void OnPlayerEnteredRoom(Player newPlayer) {
         Debug.Log(MATCHMAKING_STRING + "Opponent found! (" + newPlayer.UserId + ")" + newPlayer.NickName);
-        onMatchmakingSuccess?.Invoke();
+
+        MatchmakingSuccess();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer) {
@@ -102,7 +108,6 @@ public class Matchmaking : MonoBehaviourPunCallbacks {
         Debug.Log(MATCHMAKING_STRING + "Creating a new room.");
         
         RoomOptions options = new RoomOptions { MaxPlayers = 2 };
-        options.IsVisible = false;
 
         PhotonNetwork.CreateRoom(Guid.NewGuid().ToString(), options, TypedLobby.Default);
     }
