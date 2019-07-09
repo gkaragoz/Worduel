@@ -1,98 +1,27 @@
-﻿using SocketIO;
+﻿using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
-public class NetworkManager : MonoBehaviour {
-
-    #region Singleton
-
-    public static NetworkManager instance;
-
-    private void Awake() {
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
-            Destroy(gameObject);
-    }
-
-    #endregion
-
-    public string Status { get; set; }
-
-    private SocketIOComponent _socket;
-
+public class NetworkManager : MonoBehaviourPunCallbacks {
+    
     private void Start() {
-        _socket = GetComponent<SocketIOComponent>();
+        string username = "Player " + Random.Range(1000, 10000);
 
-        _socket.On("OnServerConnected", OnServerConnected);
-        _socket.On("OnServerDisconnected", OnServerDisconnected);
-        _socket.On("OnAuthenticated", OnAuthenticated);
-        _socket.On("OnAuthenticateFailed", OnAuthenticateFailed);
-        _socket.On("error", OnError);
-
-        ConnectToServer();
+        PhotonNetwork.LocalPlayer.NickName = username;
+        PhotonNetwork.ConnectUsingSettings();
     }
 
-    private void OnServerConnected(SocketIOEvent e) {
-        Status = "Connected to " + _socket.url;
-        Debug.Log("OnServerConnected, " + e.name + ":" + e.data);
-
-        Authenticate();
+    public override void OnConnectedToMaster() {
+        Debug.Log("OnConnectedToMaster");
     }
 
-    private void OnServerDisconnected(SocketIOEvent e) {
-        Status = "Disconnected.";
-        Debug.Log("OnServerDisconnected, " + e.name + ":" + e.data);
-    }
-
-    private void OnAuthenticated(SocketIOEvent e) {
-        Status = "Authenticated!";
-        Debug.Log("OnAuthenticated, " + e.name + ":" + e.data);
-
-        PlayerStats myPlayerStats = new PlayerStats() {
-            Id = e.data["id"].str,
-            Username = e.data["username"].str,
-            FirstName = e.data["firstName"].str,
-            LastName = e.data["lastName"].str,
-            Gender = (Gender)int.Parse(e.data["gender"].ToString())
-        };
-
-        Debug.Log("Trying to create local player.");
-        GameManager.instance.CreateMyPlayer(myPlayerStats);
-    }
-
-    private void OnAuthenticateFailed(SocketIOEvent e) {
-        Status = "ERROR: Authentication failed!";
-        Debug.Log("OnAuthenticateFailed, " + e.name + ":" + e.data);
-    }
-
-    private void OnError(SocketIOEvent e) {
-        Status = "ERROR: Server is offline!";
-        Debug.Log("OnError: " + e.name + ":" + e.data);
-    }
-
-    public void ConnectToServer() {
-        if (_socket.IsConnected) {
-            return;
-        }
-
-        Status = "Trying to connect to server..." + _socket.url;
-        Debug.Log(Status);
-        _socket.Connect();
-    }
-
-    public void Authenticate() {
-        Status = "Trying to authenticate...";
-        Authentication auth = new Authentication("testGoogleId");
-
-        JSONObject jsonObject = new JSONObject(JSONObject.Type.OBJECT);
-        jsonObject.AddField("googlePlayId", auth.GoogleId);
-
-        _socket.Emit("OnAuthenticate", jsonObject);
+    public override void OnDisconnected(DisconnectCause cause) {
+        Debug.Log("OnDisconnected: " + cause);
     }
 
     private void OnApplicationQuit() {
-        if (_socket.IsConnected) {
-            _socket.Close();
+        if (PhotonNetwork.IsConnected) {
+            PhotonNetwork.Disconnect();
         }
     }
 
